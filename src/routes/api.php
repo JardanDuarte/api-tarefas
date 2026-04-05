@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 
 Route::prefix('v1')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/generateToken', [AuthController::class, 'generateToken']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('tasks', TaskController::class);

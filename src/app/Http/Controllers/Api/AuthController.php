@@ -42,7 +42,7 @@ class AuthController extends Controller
     }
 
     // Login
-    public function login(Request $request)
+    public function generateToken(Request $request)
     {
         $validated = $request->validate([
             'email' => 'required|string|email',

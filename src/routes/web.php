@@ -11,9 +11,6 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-// Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth');
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/', [TaskController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -22,4 +19,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
     Route::post('/tasks/{task}/comments', [CommentController::class, 'store']);
     Route::delete('/tasks/{task}/comments/{comment}', [CommentController::class, 'destroy']);
+    Route::get('/tasks/create', [TaskController::class, 'create']);
+    Route::post('/tasks', [TaskController::class, 'store']);
+
+    Route::get('/tasks/{id}/edit', [TaskController::class, 'edit']);
+    Route::put('/tasks/{id}', [TaskController::class, 'update']);
+
+    Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
 });

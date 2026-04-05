@@ -18,20 +18,20 @@ class TaskController extends Controller
     }
 
     public function index(Request $request)
-{
-    /** @var User $user */
-    $user = Auth::user();
+    {
+        /** @var User $user */
+        $user = Auth::user();
 
-    $query = $user->tasks()->latest();
+        $query = $user->tasks()->latest();
 
-    if ($request->status) {
-        $query->where('status', $request->status);
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        $tasks = $query->with('comments')->paginate(10);
+
+        return view('tasks.index', compact('tasks'));
     }
-
-    $tasks = $query->with('comments')->paginate(10);
-
-    return view('tasks.index', compact('tasks'));
-}
 
     public function store(Request $request)
     {
@@ -40,11 +40,17 @@ class TaskController extends Controller
             'description' => 'nullable|string|max:3000',
             'status' => 'required|in:pendente,em_andamento,concluida'
         ]);
-        
-        $this->taskService->createTask(
+
+        $task = $this->taskService->createTask(
             Auth::user(),
             $validated
         );
+
+        if (!empty($validated['comment'])) {
+            $task->comments()->create([
+                'content' => $validated['comment']
+            ]);
+        }
 
         return back()->with('success', 'Tarefa criada!');
     }
@@ -69,5 +75,20 @@ class TaskController extends Controller
         $task->delete();
 
         return back()->with('success', 'Deletada!');
+    }
+
+    public function create()
+    {
+        return view('tasks.form');
+    }
+
+    public function edit($id)
+    {
+        $task = auth()->user()
+            ->tasks()
+            ->with('comments')
+            ->findOrFail($id);
+
+        return view('tasks.form', compact('task'));
     }
 }

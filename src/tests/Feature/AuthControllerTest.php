@@ -54,13 +54,13 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(422)->assertJsonValidationErrors(['email']);
     }
 
-    public function test_usuario_pode_fazer_login()
+    public function test_usuario_pode_gerar_token()
     {
         $user = User::factory()->create([
             'password' => Hash::make('12345678')
         ]);
 
-        $response = $this->postJson('/api/v1/login', [
+        $response = $this->postJson('/api/v1/generateToken', [
             'email' => $user->email,
             'password' => '12345678'
         ]);
@@ -77,13 +77,13 @@ class AuthControllerTest extends TestCase
             ]);
     }
 
-    public function test_login_falha_com_credenciais_invalidas()
+    public function test_gerar_token_falha_com_credenciais_invalidas()
     {
         $user = User::factory()->create([
             'password' => Hash::make('12345678')
         ]);
 
-        $response = $this->postJson('/api/v1/login', [
+        $response = $this->postJson('/api/v1/generateToken', [
             'email' => $user->email,
             'password' => 'senha_errada'
         ]);
@@ -91,9 +91,9 @@ class AuthControllerTest extends TestCase
         $response->assertStatus(401)->assertJson(['success' => false]);
     }
 
-    public function test_login_falha_com_usuario_inexistente()
+    public function test_gerar_token_falha_com_usuario_inexistente()
     {
-        $response = $this->postJson('/api/v1/login', [
+        $response = $this->postJson('/api/v1/generateToken', [
             'email' => 'naoexiste@test.com',
             'password' => '12345678'
         ]);
