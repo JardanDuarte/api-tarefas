@@ -1,21 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Log;
 use App\Services\TaskService;
 Use App\Http\Requests\FilterTaskRequest;
 Use App\Http\Requests\StoreTaskRequest;
 Use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
-use Exception;
+use App\Http\Controllers\Controller;
 
 class TaskController extends Controller
 {
-    use AuthorizesRequests;
-
     protected $taskService;
 
     public function __construct(TaskService $taskService)
@@ -77,56 +73,32 @@ class TaskController extends Controller
     // Atualizar uma tarefa
     public function update(UpdateTaskRequest $request, $taskId)
     {
-        try {
-            $task = Task::findOrFail($taskId);
+        $task = Task::findOrFail($taskId);
 
-            $this->authorize('update', $task);
+        $this->authorize('update', $task);
 
-            $task = $this->taskService->updateTask(
-                $task,
-                $request->validated()
-            );
+        $task = $this->taskService->updateTask(
+            $task,
+            $request->validated()
+        );
 
-            $task->load('comments');
+        $task->load('comments');
 
-            return new TaskResource($task);
-        } catch (Exception $e) {
-            Log::error('Erro ao atualizar tarefa', [
-                'task_id' => $taskId,
-                'error' => $e->getMessage()
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro ao atualizar tarefa'
-            ], 500);
-        }
+        return new TaskResource($task);
     }
 
     // Deletar uma tarefa
     public function destroy($taskId)
     {
-        try {
-            $task = Task::findOrFail($taskId);
+        $task = Task::findOrFail($taskId);
 
-            $this->authorize('delete', $task);
+        $this->authorize('delete', $task);
 
-            $task->delete();
+        $task->delete();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Tarefa deletada com sucesso'
-            ], 200);
-        } catch (Exception $e) {
-            Log::error('Erro ao deletar tarefa', [
-                'task_id' => $taskId,
-                'error' => $e->getMessage()
-            ]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Erro ao deletar tarefa'
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Tarefa deletada com sucesso'
+        ], 200);
     }
 }

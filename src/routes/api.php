@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\CommentController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\TaskController;
+use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\AuthController;
 
 Route::prefix('v1')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);

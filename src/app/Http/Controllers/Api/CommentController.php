@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCommentRequest;
 use App\Services\CommentService;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Controllers\Controller;
+
 
 class CommentController extends Controller
 {
-    use AuthorizesRequests;
-
     protected $commentService;
 
     public function __construct(CommentService $commentService)
@@ -63,5 +62,5 @@ class CommentController extends Controller
         $this->commentService->deleteComment($comment);
 
         return response()->noContent();
-}
+    }
 }
