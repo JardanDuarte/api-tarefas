@@ -51,7 +51,7 @@
                 onsubmit="return confirm('Tem certeza que deseja deletar esta tarefa?')">
                 @csrf
                 @method('DELETE')
-                    <button class="bg-red-600 px-3 py-1 rounded">X</button>
+                    <button class="bg-red-600 px-3 py-1 rounded">Excluir</button>
                 </form>
             </div>
         </div>
@@ -61,8 +61,19 @@
             Comentários:
             <br/>
             @foreach($task->comments as $comment)
-                <div class="text-sm text-gray-300 bg-gray-700 p-2 rounded">
-                    {{ $comment->content }}
+                <div class="flex justify-between items-center text-sm text-gray-300 bg-gray-700 p-2 rounded">
+
+                <span>{{ $comment->content }}</span>
+
+                <form method="POST" action="/tasks/{{ $task->id }}/comments/{{ $comment->id }}"
+                onsubmit="return confirm('Tem certeza que deseja excluir este comentário?')">
+                @csrf
+                @method('DELETE')
+
+                <button class="bg-red-500 px-2 py-1 rounded text-xs">
+                Excluir
+                </button>
+                </form>
                 </div>
             @endforeach
         </div>
