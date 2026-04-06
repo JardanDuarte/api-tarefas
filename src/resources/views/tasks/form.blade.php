@@ -15,6 +15,10 @@
     <input name="title" placeholder="Título"
         value="{{ $task->title ?? '' }}"
         class="w-full bg-gray-800 border border-gray-700 p-2 rounded">
+        {{-- show error --}}
+        @error('title')
+        <div class="bg-red-600 text-white p-3 rounded mb-4">{{ $message }}</div>
+        @enderror
 
     <textarea name="description" placeholder="Descrição"
         class="w-full bg-gray-800 border border-gray-700 p-2 rounded">{{ $task->description ?? '' }}</textarea>
@@ -25,36 +29,39 @@
         <option value="concluida" {{ ($task->status ?? '')=='concluida'?'selected':'' }}>Concluída</option>
     </select>
 
+    <div>
+    <label class="block text-sm text-gray-400 mb-2">Comentários</label>
+
+    <div id="comments-container" class="space-y-2">
+        <input name="comments[]"
+            class="w-full bg-gray-800 border border-gray-700 p-2 rounded"
+            placeholder="Digite um comentário">
+    </div>
+
+    <button type="button"
+        onclick="addCommentField()"
+        class="mt-2 bg-green-600 px-3 py-1 rounded text-sm">
+        + adicionar comentário
+    </button>
+</div>
+
+    <!-- botão principal -->
     <button class="bg-blue-600 px-4 py-2 rounded">
         {{ isset($task) ? 'Atualizar' : 'Criar' }}
     </button>
 </form>
 
-
-@if(isset($task))
-<div class="mt-8">
-    <h3 class="font-bold mb-2">Comentários</h3>
-
-    <form method="POST" action="/tasks/{{ $task->id }}/comments" class="flex gap-2 mb-4">
-        @csrf
-        <input name="content" class="flex-1 bg-gray-800 border border-gray-700 p-2 rounded" placeholder="Novo comentário">
-        <button class="bg-green-600 px-3 rounded">+</button>
-    </form>
-
-    <div class="space-y-2">
-        @foreach($task->comments as $comment)
-        <div class="flex justify-between bg-gray-800 p-2 rounded">
-            <span>{{ $comment->content }}</span>
-
-            <form method="POST" action="/tasks/{{ $task->id }}/comments/{{ $comment->id }}">
-                @csrf
-                @method('DELETE')
-                <button class="text-red-400">x</button>
-            </form>
-        </div>
-        @endforeach
-    </div>
-</div>
-@endif
-
 @endsection
+
+<script>
+function addCommentField() {
+    const container = document.getElementById('comments-container');
+
+    const input = document.createElement('input');
+    input.name = 'comments[]';
+    input.placeholder = 'Digite um comentário';
+    input.className = 'w-full bg-gray-800 border border-gray-700 p-2 rounded';
+
+    container.appendChild(input);
+}
+</script>

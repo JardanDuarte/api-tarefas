@@ -39,6 +39,15 @@ class TaskController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:3000',
             'status' => 'required|in:pendente,em_andamento,concluida'
+        ],
+        [
+            'title.required' => 'O título é obrigatório',
+            'title.string' => 'O título deve ser uma string',
+            'title.max' => 'O título deve ter no máximo :max caracteres',
+            'description.string' => 'A descrição deve ser uma string',
+            'description.max' => 'A descrição deve ter no máximo :max caracteres',
+            'status.required' => 'O status é obrigatório',
+            'status.in' => 'O status deve ser um dos seguintes: pendente, em_andamento, concluida'
         ]);
 
         $task = $this->taskService->createTask(
@@ -46,13 +55,17 @@ class TaskController extends Controller
             $validated
         );
 
-        if (!empty($validated['comment'])) {
-            $task->comments()->create([
-                'content' => $validated['comment']
-            ]);
+        if ($request->has('comments')) {
+            foreach ($request->comments as $comment) {
+                if (!empty($comment)) {
+                    $task->comments()->create([
+                        'content' => $comment
+                    ]);
+                }
+            }
         }
 
-        return back()->with('success', 'Tarefa criada!');
+        return redirect()->route('dashboard')->with('success', 'Tarefa criada com sucesso!');
     }
 
     public function update(Request $request, $id)
@@ -63,7 +76,7 @@ class TaskController extends Controller
 
         $this->taskService->updateTask($task, $request->only('title', 'description', 'status'));
 
-        return back()->with('success', 'Atualizada!');
+        return redirect()->route('dashboard')->with('success', 'Tarefa atualizada com sucesso!');
     }
 
     public function destroy($id)
@@ -74,7 +87,7 @@ class TaskController extends Controller
 
         $task->delete();
 
-        return back()->with('success', 'Deletada!');
+        return redirect()->route('dashboard')->with('success', 'Tarefa deletada com sucesso!');
     }
 
     public function create()
