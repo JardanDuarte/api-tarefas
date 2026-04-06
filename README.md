@@ -145,8 +145,20 @@ php artisan migrate:fresh --seed
 * API: http://localhost:8000/api/v1
 * Aplicação(Frontend): http://localhost:8000
 * phpMyAdmin: http://localhost:8080
- * Usuário: root Senha: root
+* phpMyAdmin Usuário: root Senha: root
 
+### Usuários do sistemas (Pode ser usado para gerar o token)
+
+```bash
+email: user1@teste.com
+password: 12345678
+
+email: user2@teste.com
+password: 12345678
+
+email: user3@teste.com
+password: 12345678
+```
 ---
 
 ## Autenticação via cURL
@@ -162,7 +174,7 @@ curl -X POST http://localhost:8000/api/v1/register \
   -d '{
     "name": "Seu Nome",
     "email": "email@email.com",
-    "password": "12345678"
+    "password": "12345678",
     "password_confirmation": "12345678"
   }'
 ```
