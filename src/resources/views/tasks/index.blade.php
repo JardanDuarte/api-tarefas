@@ -18,6 +18,18 @@
     <button class="bg-gray-700 px-3 py-2 rounded ml-2">Filtrar</button>
 </form>
 
+@if(session('success'))
+    <div class="bg-green-600 text-white p-3 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="bg-red-600 text-white p-3 rounded mb-4">
+        {{ session('error') }}
+    </div>
+@endif
+
 <div class="space-y-4">
     @foreach($tasks as $task)
     <div class="bg-gray-800 p-4 rounded">
