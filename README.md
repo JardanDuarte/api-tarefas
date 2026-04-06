@@ -99,6 +99,9 @@ docker-compose up -d --build
 ---
 
 ### 3. Configuração do .env
+```bash
+cd src
+```
 Copie o arquivo `.env`:
 
 ```bash
@@ -118,12 +121,21 @@ DB_PASSWORD=secret
 
 ---
 
-### 4. Instalar dependências e rodar migrations + seeds no container
+### 4. Executar os comandos abaixo para instalar dependências e rodar migrations + seeds no container
 
 ```bash
 docker exec -it laravel_app_task bash
+```
+```bash
 composer install
+```
+```bash
+chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage /var/www/bootstrap/cache
+```
+```bash
 php artisan key:generate
+```
+```bash
 php artisan migrate:fresh --seed
 ```
 
@@ -133,10 +145,13 @@ php artisan migrate:fresh --seed
 * API: http://localhost:8000/api/v1
 * Aplicação(Frontend): http://localhost:8000
 * phpMyAdmin: http://localhost:8080
+ * Usuário: root Senha: root
 
 ---
 
 ## Autenticação via cURL
+
+Você pode executar as requisições diretamente no terminal ou via postman. Caso execute via postman alem do Content-Type passe no header o -H 'Accept: application/json' \ para não ter nenhum erro de redirecionamento
 
 ### Registrar usuário
 Essa requisição ja retorna um token valido caso seja necessário você pode criar um token usando a requisição generateToken
