@@ -22,12 +22,18 @@
 
     <textarea name="description" placeholder="Descrição"
         class="w-full bg-gray-800 border border-gray-700 p-2 rounded">{{ $task->description ?? '' }}</textarea>
+        @error('description')
+        <div class="bg-red-600 text-white p-3 rounded mb-4">{{ $message }}</div>
+        @enderror
 
     <select name="status" class="w-full bg-gray-800 border border-gray-700 p-2 rounded">
         <option value="pendente" {{ ($task->status ?? '')=='pendente'?'selected':'' }}>Pendente</option>
         <option value="em_andamento" {{ ($task->status ?? '')=='em_andamento'?'selected':'' }}>Em andamento</option>
         <option value="concluida" {{ ($task->status ?? '')=='concluida'?'selected':'' }}>Concluída</option>
     </select>
+    @error('status')
+        <div class="bg-red-600 text-white p-3 rounded mb-4">{{ $message }}</div>
+    @enderror
 
     <div>
     <label class="block text-sm text-gray-400 mb-2">Comentários</label>
@@ -36,6 +42,9 @@
         <input name="comments[]"
             class="w-full bg-gray-800 border border-gray-700 p-2 rounded"
             placeholder="Digite um comentário">
+            @error('content')
+            <div class="bg-red-600 text-white p-3 rounded mb-4">{{ $message }}</div>
+            @enderror
     </div>
 
     <button type="button"

@@ -22,6 +22,11 @@ class CommentController extends Controller
     {
         $request->validate([
             'content' => 'required|string|max:1000'
+        ],
+        [
+            'content.required' => 'O campo conteúdo é obrigatório.',
+            'content.string' => 'O campo conteúdo deve ser uma string.',
+            'content.max' => 'O campo conteúdo deve ter no máximo :max caracteres.'
         ]);
 
         $task = Auth::user()->tasks()->findOrFail($taskId);
