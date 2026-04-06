@@ -11,11 +11,17 @@
             <label for="email" class="block text-gray-700">E-mail</label>
             <input type="email" name="email" id="email" value="{{ old('email') }}" required
                 class="w-full text-black border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200">
+                @error('email')
+                <div class="bg-red-600 text-white p-3 rounded mt-2">{{ $message }}</div>
+                @enderror
         </div>
         <div class="mb-4">
             <label for="password" class="block text-gray-700">Senha</label>
             <input type="password" name="password" id="password" required
                 class="w-full text-black  border border-gray-300 rounded px-3 py-2 mt-1 focus:outline-none focus:ring focus:ring-blue-200">
+                @error('password')
+                <div class="bg-red-600 text-white p-3 rounded mt-2">{{ $message }}</div>
+                @enderror
         </div>
         <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">Entrar</button>
     </form>

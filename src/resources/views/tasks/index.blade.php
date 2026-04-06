@@ -47,9 +47,10 @@
             <div class="flex gap-2">
                 <a href="/tasks/{{ $task->id }}/edit" class="bg-yellow-600 px-3 py-1 rounded">Editar</a>
 
-                <form method="POST" action="/tasks/{{ $task->id }}">
-                    @csrf
-                    @method('DELETE')
+                <form method="POST" action="/tasks/{{ $task->id }}"
+                onsubmit="return confirm('Tem certeza que deseja deletar esta tarefa?')">
+                @csrf
+                @method('DELETE')
                     <button class="bg-red-600 px-3 py-1 rounded">X</button>
                 </form>
             </div>
