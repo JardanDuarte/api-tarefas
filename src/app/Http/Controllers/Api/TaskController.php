@@ -34,8 +34,8 @@ class TaskController extends Controller
             $query->where('status', $validated['status']);
         }
 
-        if (!empty($validated['date'])) {
-            $query->whereDate('created_at', $validated['date']);
+        if (!empty($validated['created_at'])) {
+            $query->whereDate('created_at', $validated['created_at']);
         }
 
         $perPage = $validated['per_page'] ?? 10;

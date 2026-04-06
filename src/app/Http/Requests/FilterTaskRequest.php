@@ -24,7 +24,7 @@ class FilterTaskRequest extends FormRequest
     {
         return [
             'status' => 'sometimes|in:pendente,em_andamento,concluida',
-            'date' => 'sometimes|date',
+            'created_at' => 'sometimes|date',
             'per_page' => 'sometimes|integer|min:1|max:50'
         ];
     }
