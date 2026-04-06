@@ -40,7 +40,7 @@ class AuthController extends Controller
 
     public function generateToken(GenerateTokenAuthRequest $request)
     {
-        $validated = $request->validate();
+        $validated = $request->validated();
 
         $user = User::where('email', $validated['email'])->first();
 
